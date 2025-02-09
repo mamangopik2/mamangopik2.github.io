@@ -23,20 +23,21 @@
         }
 
         .form-group {
-            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            gap: 10px;
         }
 
         .form-group label {
-            display: block;
-            margin-bottom: 5px;
+            flex: 1;
             font-weight: bold;
         }
 
-        .form-group input,
-        .form-group button {
-            width: 100%;
+        .form-group input {
+            flex: 2;
             padding: 8px;
-            box-sizing: border-box;
             border: 1px solid #ccc;
             border-radius: 4px;
         }
@@ -49,38 +50,22 @@
             border-radius: 4px;
         }
 
-        .config-panel label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
         .config-panel input,
         .config-panel select {
             width: 100%;
             padding: 8px;
-            box-sizing: border-box;
             border: 1px solid #ccc;
             border-radius: 4px;
             margin-bottom: 10px;
         }
 
         .add-button {
-            /* background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px; */
             background-color: #28a745;
             color: white;
             border: none;
-            padding: 10px 15px;
+            padding: 10px;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 16px;
-            margin-top: 1%;
             width: 100%;
         }
 
@@ -92,10 +77,13 @@
             background-color: #dc3545;
             color: white;
             border: none;
-            padding: 5px 10px;
+            padding: 5px;
             border-radius: 4px;
             cursor: pointer;
-            margin-left: 10px;
+        }
+
+        .remove-button:hover {
+            background-color: #c82333;
         }
 
         .code-preview {
@@ -108,6 +96,21 @@
             white-space: pre-wrap;
             word-wrap: break-word;
         }
+
+        .copy-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .copy-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 
@@ -115,16 +118,16 @@
     <div class="form-container">
         <h2>Dynamic Form with Customization</h2>
 
-        <!-- Configuration Panel -->
+        <!-- Input Configuration Panel -->
         <div class="config-panel">
             <h3>Add Input</h3>
-            <label for="label">Label:</label>
+            <label>Label:</label>
             <input type="text" id="label" placeholder="Enter label...">
 
-            <label for="placeholder">Placeholder:</label>
+            <label>Placeholder:</label>
             <input type="text" id="placeholder" placeholder="Enter placeholder...">
 
-            <label for="input-type">Input Type:</label>
+            <label>Input Type:</label>
             <select id="input-type">
                 <option value="text">Text</option>
                 <option value="number">Number</option>
@@ -132,10 +135,10 @@
                 <option value="email">Email</option>
             </select>
 
-            <label for="input-id">ID:</label>
+            <label>ID:</label>
             <input type="text" id="input-id" placeholder="Enter ID...">
 
-            <label for="input-class">Class:</label>
+            <label>Class:</label>
             <input type="text" id="input-class" placeholder="Enter class...">
 
             <button class="add-button" onclick="addInput()">Add Input</button>
@@ -144,67 +147,74 @@
         <!-- Button Configuration Panel -->
         <div class="config-panel">
             <h3>Add Button</h3>
-            <label for="button-label">Button Text:</label>
+            <label>Button Text:</label>
             <input type="text" id="button-label" placeholder="Enter button text...">
 
-            <label for="button-type">Button Type:</label>
+            <label>Button Type:</label>
             <select id="button-type">
                 <option value="button">Button</option>
                 <option value="submit">Submit</option>
                 <option value="reset">Reset</option>
             </select>
 
-            <label for="button-id">ID:</label>
+            <label>ID:</label>
             <input type="text" id="button-id" placeholder="Enter ID...">
 
-            <label for="button-class">Class:</label>
+            <label>Class:</label>
             <input type="text" id="button-class" placeholder="Enter class...">
 
             <button class="add-button" onclick="addButton()">Add Button</button>
         </div>
 
         <!-- Dynamic Form -->
-        <form id="dynamic-form">
-            <!-- Inputs and buttons will be added here -->
-        </form>
+        <form id="dynamic-form"></form>
 
         <!-- HTML Code Preview -->
-        <strong>Generated HTML Code:</strong>
         <div class="code-preview">
+            <strong>Generated HTML Code:</strong>
             <div id="html-code"></div>
         </div>
-    </div>
 
-    <style id="dynamic-styles"></style>
+        <!-- Copy Button -->
+        <button class="copy-button" onclick="copyHtml()">Copy HTML</button>
+
+    </div>
 
     <script>
         function addInput() {
             const form = document.getElementById('dynamic-form');
-            const label = document.getElementById('label').value || 'New Input';
-            const placeholder = document.getElementById('placeholder').value || 'Enter value...';
+            const labelText = document.getElementById('label').value || 'New Input';
+            const placeholderText = document.getElementById('placeholder').value || 'Enter value...';
             const inputType = document.getElementById('input-type').value;
             const inputId = document.getElementById('input-id').value || `input-${Date.now()}`;
             const inputClass = document.getElementById('input-class').value || '';
 
             const newInputGroup = document.createElement('div');
             newInputGroup.className = 'form-group';
+            newInputGroup.id = inputId + '-group';
 
             const newLabel = document.createElement('label');
+            newLabel.textContent = labelText;
             newLabel.setAttribute('for', inputId);
-            newLabel.textContent = label;
 
             const newInput = document.createElement('input');
             newInput.type = inputType;
             newInput.id = inputId;
-            newInput.name = inputId;
-            newInput.placeholder = placeholder;
-            newInput.className = 'form-group ' + inputClass;
+            newInput.className = inputClass;
+            newInput.placeholder = placeholderText;
+
+            const removeButton = document.createElement('button');
+            removeButton.className = 'remove-button';
+            removeButton.textContent = 'Remove';
+            removeButton.onclick = () => removeElement(newInputGroup.id);
 
             newInputGroup.appendChild(newLabel);
             newInputGroup.appendChild(newInput);
+            newInputGroup.appendChild(removeButton);
+
             form.appendChild(newInputGroup);
 
-            updatePreviews();
+            updatePreview();
         }
 
         function addButton() {
@@ -214,27 +224,54 @@
             const buttonId = document.getElementById('button-id').value || `button-${Date.now()}`;
             const buttonClass = document.getElementById('button-class').value || '';
 
+            const newButtonGroup = document.createElement('div');
+            newButtonGroup.className = 'form-group';
+            newButtonGroup.id = buttonId + '-group';
+
             const newButton = document.createElement('button');
             newButton.type = buttonType;
             newButton.id = buttonId;
-            newButton.className = 'add-button ' + buttonClass;
+            newButton.className = buttonClass;
             newButton.textContent = buttonText;
 
-            form.appendChild(newButton);
+            const removeButton = document.createElement('button');
+            removeButton.className = 'remove-button';
+            removeButton.textContent = 'Remove';
+            removeButton.onclick = () => removeElement(newButtonGroup.id);
 
-            updatePreviews();
+            newButtonGroup.appendChild(newButton);
+            newButtonGroup.appendChild(removeButton);
+
+            form.appendChild(newButtonGroup);
+
+            updatePreview();
         }
 
-        function updatePreviews() {
-            const form = document.getElementById('dynamic-form').cloneNode(true);
-            const htmlCodeElement = document.getElementById('html-code');
-            const cssCodeElement = document.getElementById('css-code');
-            const styleTag = document.getElementById('dynamic-styles');
+        function removeElement(elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.remove();
+                updatePreview();
+            }
+        }
 
-            // Get the generated HTML
-            let data = form.innerHTML.replace(/</g, '&lt;').replace(/>/g, '&gt;<br>').replace(/\n/g, '<br>');
-            data = data.replace('&lt;/', '<br>&lt;/')
-            htmlCodeElement.innerHTML = data;
+        function updatePreview() {
+            const form = document.getElementById('dynamic-form').cloneNode(true);
+            form.querySelectorAll('.remove-button').forEach(btn => btn.remove()); // Remove remove buttons for preview
+
+            const htmlCodeElement = document.getElementById('html-code');
+            let htmlContent = form.innerHTML.replace(/</g, '&lt;').replace(/>/g, '&gt;<br>').replace(/\n/g, '<br>');
+            htmlContent = htmlContent.replace('&lt;/', '<br>&lt;/');
+            htmlCodeElement.innerHTML = htmlContent;
+        }
+
+        function copyHtml() {
+            const htmlCode = document.getElementById('html-code').innerText;
+            navigator.clipboard.writeText(htmlCode).then(() => {
+                alert('HTML code copied to clipboard!');
+            }).catch(err => {
+                alert('Failed to copy text: ' + err);
+            });
         }
     </script>
 </body>

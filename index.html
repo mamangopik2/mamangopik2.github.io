@@ -1,26 +1,279 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<body>
-    <!-- Header Section -->
-    <header id="header">
-        <!-- Logo and Brand will be injected by header.js -->
-    </header>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Form with Customization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
 
-    <!-- Body Section -->
-    <div id="body-content">
-        <!-- Content will be injected by body.js -->
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+
+        .form-group label {
+            flex: 1;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            flex: 2;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .config-panel {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .config-panel input,
+        .config-panel select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .add-button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .add-button:hover {
+            background-color: #218838;
+        }
+
+        .remove-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .remove-button:hover {
+            background-color: #c82333;
+        }
+
+        .code-preview {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .copy-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .copy-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <h2>Dynamic Form with Customization</h2>
+
+        <!-- Input Configuration Panel -->
+        <div class="config-panel">
+            <h3>Add Input</h3>
+            <label>Label:</label>
+            <input type="text" id="label" placeholder="Enter label...">
+
+            <label>Placeholder:</label>
+            <input type="text" id="placeholder" placeholder="Enter placeholder...">
+
+            <label>Input Type:</label>
+            <select id="input-type">
+                <option value="text">Text</option>
+                <option value="number">Number</option>
+                <option value="password">Password</option>
+                <option value="email">Email</option>
+            </select>
+
+            <label>ID:</label>
+            <input type="text" id="input-id" placeholder="Enter ID...">
+
+            <label>Class:</label>
+            <input type="text" id="input-class" placeholder="Enter class...">
+
+            <button class="add-button" onclick="addInput()">Add Input</button>
+        </div>
+
+        <!-- Button Configuration Panel -->
+        <div class="config-panel">
+            <h3>Add Button</h3>
+            <label>Button Text:</label>
+            <input type="text" id="button-label" placeholder="Enter button text...">
+
+            <label>Button Type:</label>
+            <select id="button-type">
+                <option value="button">Button</option>
+                <option value="submit">Submit</option>
+                <option value="reset">Reset</option>
+            </select>
+
+            <label>ID:</label>
+            <input type="text" id="button-id" placeholder="Enter ID...">
+
+            <label>Class:</label>
+            <input type="text" id="button-class" placeholder="Enter class...">
+
+            <button class="add-button" onclick="addButton()">Add Button</button>
+        </div>
+
+        <!-- Dynamic Form -->
+        <form id="dynamic-form"></form>
+
+        <!-- HTML Code Preview -->
+        <div class="code-preview">
+            <strong>Generated HTML Code:</strong>
+            <div id="html-code"></div>
+        </div>
+
+        <!-- Copy Button -->
+        <button class="copy-button" onclick="copyHtml()">Copy HTML</button>
+
     </div>
 
-    <!-- Footer Section -->
-    <footer id="footer">
-        <!-- Footer content will be injected by footer.js -->
-    </footer>
+    <script>
+        function addInput() {
+            const form = document.getElementById('dynamic-form');
+            const labelText = document.getElementById('label').value || 'New Input';
+            const placeholderText = document.getElementById('placeholder').value || 'Enter value...';
+            const inputType = document.getElementById('input-type').value;
+            const inputId = document.getElementById('input-id').value || `input-${Date.now()}`;
+            const inputClass = document.getElementById('input-class').value || '';
 
-    <!-- JavaScript Files -->
-    <script src="header.js"></script>
-    <script src="body.js"></script>
-    <script src="footer.js"></script>
+            const newInputGroup = document.createElement('div');
+            newInputGroup.className = 'form-group';
+            newInputGroup.id = inputId + '-group';
+
+            const newLabel = document.createElement('label');
+            newLabel.textContent = labelText;
+            newLabel.setAttribute('for', inputId);
+
+            const newInput = document.createElement('input');
+            newInput.type = inputType;
+            newInput.id = inputId;
+            newInput.className = inputClass;
+            newInput.placeholder = placeholderText;
+
+            const removeButton = document.createElement('button');
+            removeButton.className = 'remove-button';
+            removeButton.textContent = 'Remove';
+            removeButton.onclick = () => removeElement(newInputGroup.id);
+
+            newInputGroup.appendChild(newLabel);
+            newInputGroup.appendChild(newInput);
+            newInputGroup.appendChild(removeButton);
+
+            form.appendChild(newInputGroup);
+
+            updatePreview();
+        }
+
+        function addButton() {
+            const form = document.getElementById('dynamic-form');
+            const buttonText = document.getElementById('button-label').value || 'Click Me';
+            const buttonType = document.getElementById('button-type').value;
+            const buttonId = document.getElementById('button-id').value || `button-${Date.now()}`;
+            const buttonClass = document.getElementById('button-class').value || '';
+
+            const newButtonGroup = document.createElement('div');
+            newButtonGroup.className = 'form-group';
+            newButtonGroup.id = buttonId + '-group';
+
+            const newButton = document.createElement('button');
+            newButton.type = buttonType;
+            newButton.id = buttonId;
+            newButton.className = buttonClass;
+            newButton.textContent = buttonText;
+
+            const removeButton = document.createElement('button');
+            removeButton.className = 'remove-button';
+            removeButton.textContent = 'Remove';
+            removeButton.onclick = () => removeElement(newButtonGroup.id);
+
+            newButtonGroup.appendChild(newButton);
+            newButtonGroup.appendChild(removeButton);
+
+            form.appendChild(newButtonGroup);
+
+            updatePreview();
+        }
+
+        function removeElement(elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.remove();
+                updatePreview();
+            }
+        }
+
+        function updatePreview() {
+            const form = document.getElementById('dynamic-form').cloneNode(true);
+            form.querySelectorAll('.remove-button').forEach(btn => btn.remove()); // Remove remove buttons for preview
+
+            const htmlCodeElement = document.getElementById('html-code');
+            let htmlContent = form.innerHTML.replace(/</g, '&lt;').replace(/>/g, '&gt;<br>').replace(/\n/g, '<br>');
+            htmlContent = htmlContent.replace('&lt;/', '<br>&lt;/');
+            htmlCodeElement.innerHTML = htmlContent;
+        }
+
+        function copyHtml() {
+            const htmlCode = document.getElementById('html-code').innerText;
+            navigator.clipboard.writeText(htmlCode).then(() => {
+                alert('HTML code copied to clipboard!');
+            }).catch(err => {
+                alert('Failed to copy text: ' + err);
+            });
+        }
+    </script>
 </body>
 
 </html>
