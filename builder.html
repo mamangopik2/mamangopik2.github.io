@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Form with Customization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group button {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .config-panel {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .config-panel label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .config-panel input,
+        .config-panel select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .add-button {
+            /* background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px; */
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 1%;
+            width: 100%;
+        }
+
+        .add-button:hover {
+            background-color: #218838;
+        }
+
+        .remove-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .code-preview {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <h2>Dynamic Form with Customization</h2>
+
+        <!-- Configuration Panel -->
+        <div class="config-panel">
+            <h3>Add Input</h3>
+            <label for="label">Label:</label>
+            <input type="text" id="label" placeholder="Enter label...">
+
+            <label for="placeholder">Placeholder:</label>
+            <input type="text" id="placeholder" placeholder="Enter placeholder...">
+
+            <label for="input-type">Input Type:</label>
+            <select id="input-type">
+                <option value="text">Text</option>
+                <option value="number">Number</option>
+                <option value="password">Password</option>
+                <option value="email">Email</option>
+            </select>
+
+            <label for="input-id">ID:</label>
+            <input type="text" id="input-id" placeholder="Enter ID...">
+
+            <label for="input-class">Class:</label>
+            <input type="text" id="input-class" placeholder="Enter class...">
+
+            <button class="add-button" onclick="addInput()">Add Input</button>
+        </div>
+
+        <!-- Button Configuration Panel -->
+        <div class="config-panel">
+            <h3>Add Button</h3>
+            <label for="button-label">Button Text:</label>
+            <input type="text" id="button-label" placeholder="Enter button text...">
+
+            <label for="button-type">Button Type:</label>
+            <select id="button-type">
+                <option value="button">Button</option>
+                <option value="submit">Submit</option>
+                <option value="reset">Reset</option>
+            </select>
+
+            <label for="button-id">ID:</label>
+            <input type="text" id="button-id" placeholder="Enter ID...">
+
+            <label for="button-class">Class:</label>
+            <input type="text" id="button-class" placeholder="Enter class...">
+
+            <button class="add-button" onclick="addButton()">Add Button</button>
+        </div>
+
+        <!-- Dynamic Form -->
+        <form id="dynamic-form">
+            <!-- Inputs and buttons will be added here -->
+        </form>
+
+        <!-- HTML Code Preview -->
+        <strong>Generated HTML Code:</strong>
+        <div class="code-preview">
+            <div id="html-code"></div>
+        </div>
+    </div>
+
+    <style id="dynamic-styles"></style>
+
+    <script>
+        function addInput() {
+            const form = document.getElementById('dynamic-form');
+            const label = document.getElementById('label').value || 'New Input';
+            const placeholder = document.getElementById('placeholder').value || 'Enter value...';
+            const inputType = document.getElementById('input-type').value;
+            const inputId = document.getElementById('input-id').value || `input-${Date.now()}`;
+            const inputClass = document.getElementById('input-class').value || '';
+
+            const newInputGroup = document.createElement('div');
+            newInputGroup.className = 'form-group';
+
+            const newLabel = document.createElement('label');
+            newLabel.setAttribute('for', inputId);
+            newLabel.textContent = label;
+
+            const newInput = document.createElement('input');
+            newInput.type = inputType;
+            newInput.id = inputId;
+            newInput.name = inputId;
+            newInput.placeholder = placeholder;
+            newInput.className = 'form-group ' + inputClass;
+
+            newInputGroup.appendChild(newLabel);
+            newInputGroup.appendChild(newInput);
+            form.appendChild(newInputGroup);
+
+            updatePreviews();
+        }
+
+        function addButton() {
+            const form = document.getElementById('dynamic-form');
+            const buttonText = document.getElementById('button-label').value || 'Click Me';
+            const buttonType = document.getElementById('button-type').value;
+            const buttonId = document.getElementById('button-id').value || `button-${Date.now()}`;
+            const buttonClass = document.getElementById('button-class').value || '';
+
+            const newButton = document.createElement('button');
+            newButton.type = buttonType;
+            newButton.id = buttonId;
+            newButton.className = 'add-button ' + buttonClass;
+            newButton.textContent = buttonText;
+
+            form.appendChild(newButton);
+
+            updatePreviews();
+        }
+
+        function updatePreviews() {
+            const form = document.getElementById('dynamic-form').cloneNode(true);
+            const htmlCodeElement = document.getElementById('html-code');
+            const cssCodeElement = document.getElementById('css-code');
+            const styleTag = document.getElementById('dynamic-styles');
+
+            // Get the generated HTML
+            let data = form.innerHTML.replace(/</g, '&lt;').replace(/>/g, '&gt;<br>').replace(/\n/g, '<br>');
+            data = data.replace('&lt;/', '<br>&lt;/')
+            htmlCodeElement.innerHTML = data;
+        }
+    </script>
+</body>
+
+</html>
